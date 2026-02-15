@@ -42,3 +42,16 @@ html, body {
 * {
   box-sizing: border-box; /* Ensures padding doesn't push width over 100% */
 }
+/* globals.css */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* This stops the horizontal moving entirely */
+  position: relative;
+  touch-action: manipulation; /* Prevents accidental zooming on taps */
+}
+
+/* Force all large text to stay inside the screen */
+h1, h2, h3 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}

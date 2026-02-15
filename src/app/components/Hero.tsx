@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SLIDES = [
   {
-    image: "/hero1.jpg", // Replace with your actual paths
+    image: "/hero1.jpg", 
     tag: "Expert Oral Surgery",
     title: "Precision care for your smile."
   },
@@ -21,10 +22,16 @@ const SLIDES = [
   }
 ];
 
+// Array for the "Verified Smiles" circles
+const PATIENT_IMAGES = [
+  '/black.jpg', 
+  '/patient2.jpg', 
+  '/patient3.jpg'
+];
+
 export default function Hero() {
   const [current, setCurrent] = useState(0);
 
-  // Auto-slide every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev === SLIDES.length - 1 ? 0 : prev + 1));
@@ -33,8 +40,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center bg-[#f0f9ff] pt-32 pb-20 overflow-hidden">
-      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-16 relative z-10">
+    /* overflow-x-hidden is critical to stop the "moving" effect on mobile */
+    <section className="relative min-h-screen flex items-center bg-[#f0f9ff] pt-32 pb-20 overflow-x-hidden">
+      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-16 relative z-10 max-w-full">
         
         {/* Left Content */}
         <motion.div 
@@ -47,7 +55,8 @@ export default function Hero() {
           <p className="text-[#00a3c8] text-xs font-black uppercase tracking-[0.4em] mb-6">
             {SLIDES[current].tag}
           </p>
-          <h1 className="text-[#1e4b8a] text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-10">
+          {/* break-words ensures long text doesn't push the screen out */}
+          <h1 className="text-[#1e4b8a] text-5xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-10 break-words">
             Keep your smile <br /> 
             <span className="text-[#00a3c8]">clean & great.</span>
           </h1>
@@ -61,11 +70,18 @@ export default function Hero() {
             </Link>
           </div>
 
-          {/* Floating Stats */}
+          {/* Fixed Floating Stats with Patient Images */}
           <div className="mt-16 flex items-center gap-6">
-            <div className="flex -space-x-3">
-                {[1,2,3].map(i => (
-                    <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-slate-200" />
+            <div className="flex -space-x-4"> {/* Overlap for premium feel */}
+                {PATIENT_IMAGES.map((src, i) => (
+                    <div key={i} className="w-14 h-14 rounded-full border-4 border-white bg-slate-200 overflow-hidden relative shadow-lg">
+                        <img 
+                          src={src} 
+                          alt="Patient Success" 
+                          className="w-full h-full object-cover"
+                          onError={(e) => { e.currentTarget.src = "https://ui-avatars.com/api/?background=cbd5e1"; }} 
+                        />
+                    </div>
                 ))}
             </div>
             <div>
@@ -75,9 +91,9 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Right Slider with Curved Mask */}
-        <div className="relative flex justify-center items-center">
-          <div className="relative w-full aspect-[4/5] max-w-[500px] overflow-hidden rounded-[100px] md:rounded-[200px] border-[16px] border-white shadow-2xl">
+        {/* Right Slider */}
+        <div className="relative flex justify-center items-center w-full overflow-visible">
+          <div className="relative w-full aspect-[4/5] max-w-[500px] overflow-hidden rounded-[80px] md:rounded-[200px] border-[12px] md:border-[16px] border-white shadow-2xl">
             <AnimatePresence mode="wait">
               <motion.img 
                 key={current}
@@ -91,30 +107,21 @@ export default function Hero() {
             </AnimatePresence>
           </div>
           
-          {/* Decorative Elements */}
-          <motion.div 
-            animate={{ y: [0, -20, 0] }}
-            transition={{ repeat: Infinity, duration: 4 }}
-            className="absolute -bottom-6 -left-6 bg-white p-8 rounded-[40px] shadow-2xl hidden md:block"
-          >
-            <span className="text-5xl">🦷</span>
-          </motion.div>
-
-          {/* Slider Indicators */}
-          <div className="absolute right-[-40px] flex flex-col gap-3">
+          {/* Slider Indicators - Adjusted for mobile visibility */}
+          <div className="absolute right-[-20px] md:right-[-40px] flex flex-col gap-3">
              {SLIDES.map((_, i) => (
                <button 
                  key={i}
                  onClick={() => setCurrent(i)}
-                 className={`w-2 h-12 rounded-full transition-all duration-500 ${current === i ? 'bg-[#00a3c8] h-20' : 'bg-slate-300'}`}
+                 className={`w-1.5 md:w-2 h-8 md:h-12 rounded-full transition-all duration-500 ${current === i ? 'bg-[#00a3c8] h-12 md:h-20' : 'bg-slate-300'}`}
                />
              ))}
           </div>
         </div>
       </div>
 
-      {/* Improved Background Decoration */}
-      <div className="absolute top-0 right-0 w-[60%] h-full bg-gradient-to-l from-[#dcf2ff] to-transparent -z-10 rounded-l-[300px] opacity-40"></div>
+      {/* Background Decoration - opacity lowered for better text contrast */}
+      <div className="absolute top-0 right-0 w-[80%] lg:w-[60%] h-full bg-gradient-to-l from-[#dcf2ff] to-transparent -z-10 rounded-l-[300px] opacity-30"></div>
     </section>
   );
 }

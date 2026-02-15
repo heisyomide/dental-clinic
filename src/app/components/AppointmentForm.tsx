@@ -1,56 +1,46 @@
 "use client";
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { appointmentSchema, AppointmentInput } from '@/lib/validators';
 
 export default function AppointmentForm() {
   const router = useRouter();
   
-  // Use the schema type directly in useForm
   const { 
     register, 
+    watch, // Added watch to get the current service value
     handleSubmit, 
-    formState: { errors, isSubmitting } 
+    formState: { errors } 
   } = useForm<AppointmentInput>({
     resolver: zodResolver(appointmentSchema),
     defaultValues: {
       gender: 'Male',
       service: 'General Checkup',
-      paymentStatus: 'Pending', // Matches the strict Zod enum
+      paymentStatus: 'Pending',
     }
   });
 
-  // Use SubmitHandler type to ensure 'values' and 'data' match internal types
-  const onSubmit: SubmitHandler<AppointmentInput> = async (values) => {
-    try {
-      const response = await fetch('/api/appointment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
+  // This watches the "service" field in real-time
+  const selectedService = watch("service");
 
-      if (response.ok) {
-        const result = await response.json();
-        // Dynamic redirect for 50% deposit logic
-        router.push(`/pay?id=${result.id}&service=${encodeURIComponent(values.service)}`);
-      } else {
-        alert("Failed to save appointment. Please try again.");
-      }
-    } catch (err) {
-      console.error("System Error:", err);
-    }
+  // Since we have no backend, we use this handler for the button
+  const handleNoBackendSubmit = (data: AppointmentInput) => {
+    // We pass the actual service selected in the form to the payment page
+    router.push(`/pay?service=${encodeURIComponent(data.service)}`);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-[#1e4b8a]">
+    /* We use handleSubmit so that Zod validation still works before redirecting */
+    <form onSubmit={handleSubmit(handleNoBackendSubmit)} className="space-y-4 text-[#1e4b8a]">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Full Name */}
         <div className="flex flex-col gap-1">
           <label className="text-[10px] font-black uppercase tracking-widest ml-1">Full Name</label>
           <input 
             {...register("name")} 
+            placeholder="John Doe"
             className={`p-4 rounded-2xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-[#00a3c8] transition-all ${errors.name ? 'ring-2 ring-red-400' : ''}`} 
           />
           {errors.name && <span className="text-[9px] text-red-500 font-bold ml-2">{errors.name.message}</span>}
@@ -91,6 +81,7 @@ export default function AppointmentForm() {
           <option value="Dental Implants">Dental Implants</option>
           <option value="Orthodontics">Orthodontics (Braces)</option>
           <option value="Oral Surgery">Oral Surgery</option>
+          <option value="Teeth Whitening">Teeth Whitening</option>
         </select>
       </div>
 
@@ -111,10 +102,10 @@ export default function AppointmentForm() {
       </div>
 
       <button 
-        disabled={isSubmitting} 
+        type="submit" // Set back to submit so it triggers the validation first
         className="w-full bg-[#1e4b8a] text-white font-black py-5 rounded-2xl shadow-xl hover:bg-[#00a3c8] transition-all uppercase text-[11px] tracking-widest mt-4"
       >
-        {isSubmitting ? "Generating Invoice..." : "Continue to Payment"}
+        Continue to Payment
       </button>
     </form>
   );

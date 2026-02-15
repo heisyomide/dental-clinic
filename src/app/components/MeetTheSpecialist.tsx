@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Image from 'next/image'; // Use Next.js Image for better deployment stability
 
 export default function MeetTheSpecialist() {
   return (
@@ -9,17 +10,21 @@ export default function MeetTheSpecialist() {
           
           {/* Left Side: Professional Portrait */}
           <div className="lg:w-1/2 relative">
-            {/* Background Decorative Element */}
             <div className="absolute -top-10 -left-10 w-64 h-64 bg-[#00a3c8]/10 rounded-full blur-3xl -z-10" />
             <div className="absolute -bottom-10 -right-10 w-80 h-80 bg-[#1e4b8a]/5 rounded-full blur-3xl -z-10" />
             
             <div className="relative rounded-[60px] overflow-hidden border-[12px] border-[#f8fafc] shadow-2xl">
-              <img 
-                src="/specialist.jpg" 
-                alt="Lead Specialist Dentist" 
-                className="w-full h-full object-cover aspect-[4/5] scale-105 hover:scale-100 transition-transform duration-700"
-              />
-              {/* Experience Badge Overlay */}
+              {/* Using Next.js Image component fixes many deployment pathing issues */}
+              <div className="relative aspect-[4/5] overflow-hidden">
+                <Image 
+                  src="/specialist.jpg" // DOUBLE CHECK: Is it .jpg or .png or .JPG?
+                  alt="Lead Specialist Dentist" 
+                  fill
+                  priority
+                  className="object-cover scale-105 hover:scale-100 transition-transform duration-700"
+                />
+              </div>
+              
               <div className="absolute bottom-8 left-8 bg-[#1e4b8a] p-6 rounded-3xl shadow-xl text-white text-center">
                 <p className="text-3xl font-black leading-none">15+</p>
                 <p className="text-[8px] font-black uppercase tracking-widest mt-1">Years Expert</p>
@@ -41,7 +46,6 @@ export default function MeetTheSpecialist() {
               </p>
             </div>
 
-            {/* Grid of Expertise Points */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
               <div className="space-y-2">
                 <p className="text-[#1e4b8a] font-black uppercase text-xs tracking-widest">Education</p>
@@ -61,7 +65,6 @@ export default function MeetTheSpecialist() {
               </div>
             </div>
 
-            {/* Action Call */}
             <div className="flex flex-col sm:flex-row items-center gap-6 p-2 bg-[#f8fafc] rounded-3xl sm:rounded-full pr-8">
               <button 
                 onClick={() => document.getElementById('booking')?.scrollIntoView({behavior: 'smooth'})}
@@ -74,7 +77,6 @@ export default function MeetTheSpecialist() {
               </p>
             </div>
           </div>
-
         </div>
       </div>
     </section>
