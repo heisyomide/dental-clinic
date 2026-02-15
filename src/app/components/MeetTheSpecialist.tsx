@@ -17,7 +17,7 @@ export default function MeetTheSpecialist() {
               {/* Using Next.js Image component fixes many deployment pathing issues */}
               <div className="relative aspect-[4/5] overflow-hidden">
                 <Image 
-                  src="/sss.JPG" // DOUBLE CHECK: Is it .jpg or .png or .JPG?
+                  src="/sss.jpg" // DOUBLE CHECK: Is it .jpg or .png or .JPG?
                   alt="Lead Specialist Dentist" 
                   fill
                   priority
