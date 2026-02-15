@@ -17,7 +17,7 @@ export default function BookCTA() {
               {/* Main Image with unique Specialist Curve */}
               <div className="rounded-t-full rounded-bl-full overflow-hidden border-[10px] border-white/10 shadow-xl">
                 <img 
-                  src="/specialist1.jpg" 
+                  src="/sss.jpg" 
                   alt="Crystal Specialist Care" 
                   className="w-full h-full object-cover aspect-video lg:aspect-square"
                 />
