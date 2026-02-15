@@ -68,8 +68,8 @@ export default function ServiceDetailPage() {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             
-            {/* Gallery/Image Section */}
-            <div className="sticky top-32">
+            {/* Fixed: Only sticky on desktop (lg:sticky), relative on mobile */}
+            <div className="relative lg:sticky lg:top-32">
               <div className="aspect-[4/5] rounded-[60px] overflow-hidden border-[16px] border-slate-50 shadow-2xl">
                 <img src={data.image} alt={data.title} className="w-full h-full object-cover" />
               </div>
@@ -95,7 +95,8 @@ export default function ServiceDetailPage() {
                 <div className="space-y-4">
                   {data.process.map((step: string, i: number) => (
                     <div key={i} className="flex items-center gap-4 bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                      <span className="w-10 h-10 bg-[#1e4b8a] text-white flex items-center justify-center rounded-xl font-black text-sm">0{i+1}</span>
+                      {/* Added shrink-0 to keep the circle round on mobile */}
+                      <span className="w-10 h-10 bg-[#1e4b8a] text-white flex items-center justify-center rounded-xl font-black text-sm shrink-0">0{i+1}</span>
                       <p className="text-[#1e4b8a] font-bold uppercase text-[11px] tracking-tight">{step}</p>
                     </div>
                   ))}
