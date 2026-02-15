@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@layer base {
+  :root {
+    --medical-primary: 191 100% 39%;   /* #00a3c8 - Crystal Cyan */
+    --medical-secondary: 215 64% 33%; /* #1e4b8a - Specialist Navy */
+    --medical-accent: 204 100% 97%;   /* #f0f9ff - Ice Blue */
+    --medical-surface: 0 0% 100%;     /* White */
+  }
+}
