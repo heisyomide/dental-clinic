@@ -16,11 +16,12 @@ export default function BookCTA() {
             <div className="relative">
               {/* Main Image with unique Specialist Curve */}
               <div className="rounded-t-full rounded-bl-full overflow-hidden border-[10px] border-white/10 shadow-xl">
-                <img 
-                  src="/sss.jpg" 
-                  alt="Crystal Specialist Care" 
-                  className="w-full h-full object-cover aspect-video lg:aspect-square"
-                />
+               <img 
+  src="/sss.jpg?v=1" 
+  alt="Lead Specialist Dentist" 
+  className="w-full h-full object-cover object-top scale-105 hover:scale-100 transition-transform duration-700"
+  /* object-top ensures the face is prioritized over the torso */
+/>
               </div>
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -right-6 bg-white p-4 rounded-2xl shadow-2xl animate-pulse">
